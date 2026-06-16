@@ -205,13 +205,13 @@ pytest tests/ -v
 
 ## Danh sách kiểm tra nộp bài
 
-- [x] `pytest tests/ -v` — tất cả kiểm thử đều pass
-- [x] `overall_score` trên `EvalResult` đã triển khai
-- [x] `run_regression` trên `BenchmarkRunner` đã triển khai
-- [x] `generate_improvement_log` trên `FailureAnalyzer` đã triển khai
-- [x] `exercises.md` — golden dataset 20 QA (stratified) + benchmark results + rubric design
-- [x] `reflection.md` — evaluation report với 3 failure analyses (5 Whys) + improvement log + CI/CD strategy
-- [x] `solution/solution.py` — bản sao template.py đã hoàn chỉnh
+- [ ] `pytest tests/ -v` — tất cả kiểm thử đều pass
+- [ ] `overall_score` trên `EvalResult` đã triển khai
+- [ ] `run_regression` trên `BenchmarkRunner` đã triển khai
+- [ ] `generate_improvement_log` trên `FailureAnalyzer` đã triển khai
+- [ ] `exercises.md` — golden dataset 20 QA (stratified) + benchmark results + rubric design
+- [ ] `reflection.md` — evaluation report với 3 failure analyses (5 Whys) + improvement log + CI/CD strategy
+- [ ] `solution/solution.py` — bản sao template.py đã hoàn chỉnh
 
 ---
 
