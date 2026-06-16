@@ -307,7 +307,7 @@ precision = ev.evaluate_context_precision(reranked, expected)
 #### Bước 4 — Câu hỏi phân tích
 
 1. **Recall có đổi sau khi rerank không? Tại sao?**
-   > *Gợi ý: rerank chỉ đổi thứ tự, không thêm/bớt chunk → recall (tính trên union) không đổi.* Recall không đổi. Recall tính dựa trên union (phép hợp) của các tokens trong TẤT CẢ các chunks lấy về so với expected answer. Việc đảo thứ tự (permutation) các chunks trong mảng không làm thay đổi tập hợp union này.
+   > Recall không đổi. Recall tính dựa trên union (phép hợp) của các tokens trong TẤT CẢ các chunks lấy về so với expected answer. Việc đảo thứ tự (permutation) các chunks trong mảng không làm thay đổi tập hợp union này.
 
 2. **Precision tăng bao nhiêu? Vì sao reranking lại tác động đúng vào precision chứ không phải recall?**
    > Precision tăng trung bình 0.42 (từ 0.55 lên 0.97). Reranking tác động trực tiếp vào precision vì Context Precision là một "rank-aware metric" (tính theo AP@K). Đưa các chunk có độ liên quan cao lên đầu danh sách sẽ làm tăng đáng kể điểm số AP.
