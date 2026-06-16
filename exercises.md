@@ -115,7 +115,6 @@ Theo bài giảng, golden dataset cần:
 
 #### Easy (5 pairs) — Factual lookup, single-doc
 | ID | Question | Expected Answer | Context (1–2 sentences) | Source Doc |
-| ID | Question | Expected Answer | Context (1–2 sentences) | Source Doc |
 |----|----------|-----------------|------------------------|------------|
 | E01 | What is a vector database? | A vector database stores data as mathematical vectors, enabling efficient similarity search for machine learning models. | Vector databases like Pinecone and Milvus store high-dimensional vectors. They use algorithms like HNSW for fast nearest-neighbor search, which is essential for RAG. | DB Docs |
 | E02 | What does LLM stand for? | LLM stands for Large Language Model. | Large Language Models (LLMs) such as GPT-4 and Claude are trained on massive text datasets. | AI Docs |
@@ -156,7 +155,6 @@ Theo bài giảng, golden dataset cần:
 
 Chạy `BenchmarkRunner` trên 20 QA pairs. Ghi lại kết quả:
 
-| ID | Question (short) | Faithfulness | Relevance | Completeness | Overall | Passed? | Failure Type |
 | ID | Question (short) | Faithfulness | Relevance | Completeness | Overall | Passed? | Failure Type |
 |----|-----------------|--------------|-----------|--------------|---------|---------|--------------|
 | E01 | What is a vector database? | 0.29 | 0.67 | 0.54 | 0.50 | No | hallucination |
