@@ -37,10 +37,10 @@ Từ bài giảng, 3 loại bias trong LLM-as-Judge:
 > *Mô tả thí nghiệm với ít nhất 2 conditions:* Tạo dataset với 2 câu trả lời A (tốt) và B (tệ). Chạy 2 conditions: (1) Prompt judge so sánh "A trước, B sau". (2) Prompt judge so sánh "B trước, A sau". Nếu judge luôn chọn câu trả lời ở vị trí đầu tiên (A trong TH1, B trong TH2), chứng tỏ có Position Bias mạnh.
 
 **Câu 2: Làm sao fix Verbosity Bias trong rubric design?**
-> *Your answer:* Thiết kế rubric tập trung vào "Coverage of key points" (độ phủ các ý chính) thay vì độ dài. Thêm hình phạt (penalty) rõ ràng trong rubric cho các câu trả lời dài dòng nhưng không có nội dung thực chất (verbosity without substance).
+> Thiết kế rubric tập trung vào "Coverage of key points" (độ phủ các ý chính) thay vì độ dài. Thêm hình phạt (penalty) rõ ràng trong rubric cho các câu trả lời dài dòng nhưng không có nội dung thực chất (verbosity without substance).
 
 **Câu 3: Tại sao cần "calibrate against human" theo best practices?**
-> *Your answer:* Vì LLM có thể có những định kiến riêng (bias) hoặc không hiểu rõ ngữ cảnh/domain như chuyên gia con người. Calibrate giúp đảm bảo LLM-as-judge có độ đồng thuận (agreement rate) cao với human expert, từ đó kết quả đánh giá tự động mới đáng tin cậy.
+> Vì LLM có thể có những định kiến riêng (bias) hoặc không hiểu rõ ngữ cảnh/domain như chuyên gia con người. Calibrate giúp đảm bảo LLM-as-judge có độ đồng thuận (agreement rate) cao với human expert, từ đó kết quả đánh giá tự động mới đáng tin cậy.
 
 ---
 
@@ -57,7 +57,7 @@ Theo bài giảng: "Agent không pass eval = không được deploy, giống uni
 | Completeness | 0.60 | Có thể chấp nhận câu trả lời ngắn gọn hơn bình thường miễn là đúng fact. |
 
 **Câu 2: Khi nào nên chạy offline eval vs online eval?**
-> *Your answer (tham khảo bảng triggers trong bài giảng):* Offline eval chạy khi thay đổi hệ thống (đổi model, chunking strategy, system prompt) trên golden dataset trong CI/CD pipeline để duyệt code. Online eval chạy liên tục trên production traffic để monitor user satisfaction (click rate, dwell time) và phát hiện data drift.
+> Offline eval chạy khi thay đổi hệ thống (đổi model, chunking strategy, system prompt) trên golden dataset trong CI/CD pipeline để duyệt code. Online eval chạy liên tục trên production traffic để monitor user satisfaction (click rate, dwell time) và phát hiện data drift.
 
 ---
 
@@ -310,10 +310,10 @@ precision = ev.evaluate_context_precision(reranked, expected)
    > *Gợi ý: rerank chỉ đổi thứ tự, không thêm/bớt chunk → recall (tính trên union) không đổi.* Recall không đổi. Recall tính dựa trên union (phép hợp) của các tokens trong TẤT CẢ các chunks lấy về so với expected answer. Việc đảo thứ tự (permutation) các chunks trong mảng không làm thay đổi tập hợp union này.
 
 2. **Precision tăng bao nhiêu? Vì sao reranking lại tác động đúng vào precision chứ không phải recall?**
-   > *Your answer:* Precision tăng trung bình 0.42 (từ 0.55 lên 0.97). Reranking tác động trực tiếp vào precision vì Context Precision là một "rank-aware metric" (tính theo AP@K). Đưa các chunk có độ liên quan cao lên đầu danh sách sẽ làm tăng đáng kể điểm số AP.
+   > Precision tăng trung bình 0.42 (từ 0.55 lên 0.97). Reranking tác động trực tiếp vào precision vì Context Precision là một "rank-aware metric" (tính theo AP@K). Đưa các chunk có độ liên quan cao lên đầu danh sách sẽ làm tăng đáng kể điểm số AP.
 
 3. **Khi nào cần tăng Recall thay vì Precision?** (gợi ý: recall thấp = retriever bỏ sót evidence → rerank vô dụng, phải sửa retriever)
-   > *Your answer:* Khi các relevant chunks bị miss hoàn toàn trong bộ top-K lấy về (Context Recall thấp). Khi đó, Reranker dù hoàn hảo cũng không có gì để xếp lên đầu vì thông tin cần thiết không hề tồn tại trong pipeline. Lúc này cần tăng Recall bằng cách mở rộng K, dùng hybrid search, hoặc query expansion.
+   > Khi các relevant chunks bị miss hoàn toàn trong bộ top-K lấy về (Context Recall thấp). Khi đó, Reranker dù hoàn hảo cũng không có gì để xếp lên đầu vì thông tin cần thiết không hề tồn tại trong pipeline. Lúc này cần tăng Recall bằng cách mở rộng K, dùng hybrid search, hoặc query expansion.
 
 #### Bước 5 — Kỹ thuật get-context để tăng điểm (chọn ≥ 3, mô tả tác động lên Recall vs Precision)
 
@@ -328,7 +328,7 @@ precision = ev.evaluate_context_precision(reranked, expected)
 | **MMR (Maximal Marginal Relevance)** | Giảm chunk trùng lặp | Precision ↑ | Đa dạng hoá kết quả |
 
 **Pipeline khuyến nghị để tối ưu Precision (mô tả 1 đoạn):**
-> *Your answer: ví dụ "Retrieve top-50 bằng hybrid search → rerank bằng cross-encoder → giữ top-5 → MMR khử trùng lặp".* Retrieve một lượng lớn văn bản (VD: top-50) bằng **Hybrid Search** (kết hợp Dense/Vector và Sparse/BM25) để tối đa hoá Recall. Sau đó, truyền 50 chunks này qua một **Cross-encoder** (như Cohere Rerank) để chấm điểm tương quan semantic chính xác và xếp lại (Reranking), nhằm tối đa hoá Precision. Cuối cùng, chọn top-5 kết quả và chạy thuật toán **MMR (Maximal Marginal Relevance)** để đảm bảo tính đa dạng thông tin trước khi đưa vào prompt cho LLM.
+> Retrieve một lượng lớn văn bản (VD: top-50) bằng **Hybrid Search** (kết hợp Dense/Vector và Sparse/BM25) để tối đa hoá Recall. Sau đó, truyền 50 chunks này qua một **Cross-encoder** (như Cohere Rerank) để chấm điểm tương quan semantic chính xác và xếp lại (Reranking), nhằm tối đa hoá Precision. Cuối cùng, chọn top-5 kết quả và chạy thuật toán **MMR (Maximal Marginal Relevance)** để đảm bảo tính đa dạng thông tin trước khi đưa vào prompt cho LLM.
 
 #### (Tuỳ chọn) Bước 6 — Viết reranker của riêng bạn
 

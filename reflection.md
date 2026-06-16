@@ -60,10 +60,10 @@ Theo bài giảng: "Phân loại failure TRƯỚC KHI fix. Đừng fix từng fa
 > *Output của function:* Context is missing or irrelevant — improve retrieval
 
 **Bạn có đồng ý với root cause suggestion không? Tại sao?**
-> *Your answer:* KHÔNG. Chức năng `find_root_cause` báo lỗi do retrieval, nhưng thực chất đoạn context đã chứa đầy đủ lý do hallucination (weak instruction following, noise, prior knowledge). Lỗi nằm ở Generation step (Agent không tuân thủ prompt) chứ không phải Retrieval.
+> KHÔNG. Chức năng `find_root_cause` báo lỗi do retrieval, nhưng thực chất đoạn context đã chứa đầy đủ lý do hallucination (weak instruction following, noise, prior knowledge). Lỗi nằm ở Generation step (Agent không tuân thủ prompt) chứ không phải Retrieval.
 
 **Proposed fix (cụ thể, actionable):**
-> *Your answer: 1. Cập nhật System Prompt: thêm yêu cầu bắt buộc trích dẫn từ context. 2. Thêm Few-shot examples minh hoạ cách từ chối trả lời khi không có thông tin.*
+> 1. Cập nhật System Prompt: thêm yêu cầu bắt buộc trích dẫn từ context. 2. Thêm Few-shot examples minh hoạ cách từ chối trả lời khi không có thông tin.
 
 ---
 
@@ -85,10 +85,10 @@ Theo bài giảng: "Phân loại failure TRƯỚC KHI fix. Đừng fix từng fa
 | Why 4 | Root cause là gì? | Hạn chế của thuật toán Evaluator (Heuristic Word-Overlap quá yếu để đánh giá ngữ nghĩa). |
 
 **Root cause:**
-> *Your answer:* Evaluator bằng Word Overlap không có khả năng hiểu ngữ nghĩa (Semantic Understanding), dẫn đến việc đánh rớt các câu trả lời đồng nghĩa.
+> Evaluator bằng Word Overlap không có khả năng hiểu ngữ nghĩa (Semantic Understanding), dẫn đến việc đánh rớt các câu trả lời đồng nghĩa.
 
 **Proposed fix:**
-> *Your answer:* Triển khai LLM-as-a-Judge thay cho phương pháp đếm từ (Word Overlap) để đánh giá đúng ý nghĩa của câu trả lời.
+> Triển khai LLM-as-a-Judge thay cho phương pháp đếm từ (Word Overlap) để đánh giá đúng ý nghĩa của câu trả lời.
 
 ---
 
@@ -110,10 +110,10 @@ Theo bài giảng: "Phân loại failure TRƯỚC KHI fix. Đừng fix từng fa
 | Why 4 | Root cause là gì? | Thiếu cơ chế xử lý độ mơ hồ (Ambiguity Handling) trong pipeline. |
 
 **Root cause:**
-> *Your answer:* Agent thiếu quy trình kiểm tra "đủ điều kiện trả lời" (eligibility check). Khi nhận input thiếu thông tin, thay vì hỏi lại, agent lại hallucinate để trả lời.
+> Agent thiếu quy trình kiểm tra "đủ điều kiện trả lời" (eligibility check). Khi nhận input thiếu thông tin, thay vì hỏi lại, agent lại hallucinate để trả lời.
 
 **Proposed fix:**
-> *Your answer:* Thêm một node `Clarification Check` trong graph/pipeline: nếu query mơ hồ hoặc quá ngắn, yêu cầu user cung cấp thêm thông tin trước khi thực hiện retrieval.
+> Thêm một node `Clarification Check` trong graph/pipeline: nếu query mơ hồ hoặc quá ngắn, yêu cầu user cung cấp thêm thông tin trước khi thực hiện retrieval.
 
 ---
 
@@ -132,7 +132,7 @@ Theo bài giảng: "Fix 1 root cause giải quyết nhiều failures cùng lúc.
 | 3 | Thiếu cơ chế xử lý Ambiguity (Lỗ hổng logic) | A03 | Medium |
 
 **Nếu chỉ fix 1 cluster, bạn chọn cluster nào? Tại sao?**
-> *Your answer:* Chọn Cluster 2 (Weak System Prompt). Việc tinh chỉnh System Prompt (thêm "Chỉ trả lời dựa trên context") tốn rất ít effort (chỉ sửa text) nhưng lại giải quyết triệt để phần lớn các ca Hallucination nghiêm trọng do model "tự suy diễn", mang lại ROI cao nhất.
+> Chọn Cluster 2 (Weak System Prompt). Việc tinh chỉnh System Prompt (thêm "Chỉ trả lời dựa trên context") tốn rất ít effort (chỉ sửa text) nhưng lại giải quyết triệt để phần lớn các ca Hallucination nghiêm trọng do model "tự suy diễn", mang lại ROI cao nhất.
 
 ---
 
@@ -167,7 +167,7 @@ Paste output của `generate_improvement_log()`:
 > *Strict hơn hay loose hơn? Tại sao?* Threshold 0.05 khá lỏng lẻo. Đối với các hệ thống RAG cần độ tin cậy cao, nên đặt strict hơn (VD: 0.02) hoặc set riêng rẽ: Faithfulness không được phép tụt dù chỉ 0.01 (zero tolerance for new hallucinations), trong khi Completeness có thể lỏng hơn (0.05).
 
 **Câu 3: Khi phát hiện regression — block deployment hay chỉ alert?**
-> *Your answer + giải thích trade-off:* **Block deployment**. Mặc dù có rủi ro block nhầm (false positive do evaluator chấm sai), nhưng việc thả một model bị regression về Faithfulness lên production sẽ phá huỷ niềm tin của user. Việc block ép buộc kỹ sư phải review manual và điều chỉnh lại prompt/retrieval.
+> **Block deployment**. Mặc dù có rủi ro block nhầm (false positive do evaluator chấm sai), nhưng việc thả một model bị regression về Faithfulness lên production sẽ phá huỷ niềm tin của user. Việc block ép buộc kỹ sư phải review manual và điều chỉnh lại prompt/retrieval.
 
 **Câu 4: Eval pipeline nên chạy ở đâu trong CI/CD flow?**
 
